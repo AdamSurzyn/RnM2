@@ -129,7 +129,6 @@ class CharDetailsTab {
   openCharTab(charObj) {
     const charPageStr = "./charPage.html";
     const charWindow = window.location.replace(charPageStr);
-    console.log(charWindow);
     const charContainer = charWindow.document.querySelector(".char-container");
     const episodesUl = this.addUlElement(charContainer);
     console.log(charObj);
@@ -146,7 +145,7 @@ class CharDetailsTab {
 }
 
 async function hur() {
-  if (window.location.host === "127.0.0.1:5500") {
+  if (window.location.href === "http://127.0.0.1:5500/") {
     const rnmCall = new ApiCall("https://rickandmortyapi.com/api/character");
     rnmData = await rnmCall.getApiData();
     let charsArr = [];
@@ -161,6 +160,7 @@ async function hur() {
     const charContainer = document.querySelector(".list-of-chars");
     const mainPage = new MainPageContent("./index.html", charContainer);
     mainPage.listOfCharactersSetup(charsArr);
+  } else if (window.location.host === "http://127.0.0.1:5500/charPage.html") {
   }
 }
 
