@@ -24,6 +24,7 @@ class Character {
 
   get detailedInfo() {
     let characterDetails = {
+      id: this.properties.id,
       episodes: this.properties.episode,
       gender: this.properties.gender,
       locationName: this.properties.location.name,
@@ -51,9 +52,9 @@ class MainPageContent {
   //Loading up data to the page
   //Switching pages
   //Loading up a single character to the page
-  constructor(htmlFile, container) {
-    this.htmlFile = htmlFile;
+  constructor(container) {
     this.container = container;
+    this.createHtml = new addHtmlElement();
   }
 
   listOfCharactersSetup(charsObj) {
@@ -69,14 +70,70 @@ class MainPageContent {
     container.appendChild(newElement);
     charValues.forEach(([key, value]) => {
       if (key === "imageUrl") {
-        this.addImageElement(newElement, charTile.imageUrl, charTile.name);
+        this.createHtml.addImageElement(
+          newElement,
+          charTile.imageUrl,
+          charTile.name
+        );
       } else {
-        this.addDivElement(newElement, value);
+        this.createHtml.addDivElement(newElement, value);
       }
     });
-
     this.onClickOpenTab(newElement, charTile, charDetails);
   }
+
+  onClickOpenTab(element, charTile, charDetails) {
+    const joinedCharInfo = {
+      ...charTile,
+      ...charDetails, //This is worthless - im going to make a separate api call anyway
+    };
+    element.addEventListener("click", () => {
+      this.openCharTab(joinedCharInfo);
+    });
+  }
+  openCharTab(charObj) {
+    const charId = charObj.id;
+    document.location.href = `http://127.0.0.1:5500/charPage.html?id=${charId}`;
+  }
+}
+
+class CharDetailsTab {
+  constructor(charTile, charDetails) {
+    (this.charTile = charTile),
+      (this.charDetails = charDetails),
+      (this.addHtml = new addHtmlElement());
+  }
+  async addCharDetails(container) {
+    const charTile = Object.entries(this.charTile);
+    const charDetails = Object.entries(this.charDetails);
+    console.log(this.charDetails);
+    charTile.forEach(([key, value]) => {
+      if (key === "imageUrl") {
+        this.addHtml.addImageElement(
+          container,
+          this.charTile.imageUrl,
+          this.charTile.name
+        );
+      } else {
+        this.addHtml.addDivElement(container, value);
+      }
+    });
+    charDetails.forEach(([key, value]) => {
+      if (key === "episodes") {
+        const episodesContainer = this.addHtml.addUlElement(container);
+        value.forEach((episode) => {
+          this.addHtml.addLiElement(episodesContainer, episode);
+        });
+        //This should be made into another method with api call instead of just link to the episode
+      } else if (key !== "id") {
+        this.addHtml.addDivElement(container, value);
+      }
+    });
+  }
+}
+
+class addHtmlElement {
+  constructor() {}
 
   addDivElement(container, value) {
     let divElement = document.createElement("div");
@@ -96,75 +153,12 @@ class MainPageContent {
     container.appendChild(ulElement);
     return ulElement;
   }
-  addLiElement(ulContainer, obj) {}
-  onClickOpenTab(element, charTile, charDetails) {
-    const joinedCharInfo = {
-      ...charTile,
-      ...charDetails,
-    };
-
-    element.addEventListener("click", () => {
-      const newCharTab = new CharDetailsTab();
-      newCharTab.openCharTab(joinedCharInfo);
-    });
-  }
-}
-class CharDetailsTab {
-  constructor(charObj) {
-    this.charObj = charObj;
-  }
-  async addCharDetails(container, charObj) {
-    const charValues = Object.entries(charTile);
-    newElement.classList.add("chars-card");
-    container.appendChild(newElement);
-    charValues.forEach(([key, value]) => {
-      if (key === "imageUrl") {
-        this.addImageElement(newElement, charTile.imageUrl, charTile.name);
-      } else {
-        this.addDivElement(newElement, value);
-      }
-    });
-  }
-
-  openCharTab(charObj) {
-    const charPageStr = "./charPage.html";
-    const charWindow = window.location.replace(charPageStr);
-    const charContainer = charWindow.document.querySelector(".char-container");
-    const episodesUl = this.addUlElement(charContainer);
-    console.log(charObj);
-    charObj.episodes.forEach((episode) => {
-      this.addEpisodes(episode, charContainer);
-    });
-  }
-
-  async addEpisodes(url, container) {
-    const episodeCall = new ApiCall(url);
-    const episodes = await episodeCall.getApiData();
-  }
-  //Jak sensownie to zrobic, zeby miec klase, ktora moze korzystac z funkcjonalnosci innej klasy
-}
-
-async function hur() {
-  if (window.location.href === "http://127.0.0.1:5500/") {
-    const rnmCall = new ApiCall("https://rickandmortyapi.com/api/character");
-    rnmData = await rnmCall.getApiData();
-    let charsArr = [];
-    rnmData.results.forEach((char) => {
-      let charToPush = new Character(char);
-      let charObj = {
-        tile: charToPush.tileInfo,
-        details: charToPush.detailedInfo,
-      };
-      charsArr.push(charObj);
-    });
-    const charContainer = document.querySelector(".list-of-chars");
-    const mainPage = new MainPageContent("./index.html", charContainer);
-    mainPage.listOfCharactersSetup(charsArr);
-  } else if (window.location.host === "http://127.0.0.1:5500/charPage.html") {
+  addLiElement(ulContainer, value) {
+    let liElement = document.createElement("li");
+    liElement.innerHTML = value;
+    ulContainer.appendChild(liElement);
+    return liElement;
   }
 }
 
-hur();
-/* TODO:
-  1) add if statement to the initialisation that if the host is with new char, a new window should open and elements should be pushed to it..
-*/
+export { ApiCall, MainPageContent, Character, CharDetailsTab, addHtmlElement };
