@@ -1,3 +1,4 @@
+import { AddHtmlElement } from "./addHtmlElement.js";
 class CharDetailsTab {
   charTile;
   charDetails;

@@ -20,41 +20,53 @@ class PagingArrows {
       class: "arrow-left",
       innerHTML: "<",
     };
-    const arrowRight = this.newHtml.addElement(container, arrowRightObj, "div");
-    arrowRight.innerHTML = ">";
-    arrowRight.addEventListener("click", async (e) => {
-      const newData = await this.addDataOnclick(
-        e,
-        nextPageUrl,
-        prevPageUrl,
-        apiData
-      );
-      console.log(newData);
-      this.loadNewDataOnPage(dataContainer, newData);
-
-      nextPageUrl = newData.info.next;
-      prevPageUrl = newData.info.prev;
-    });
 
     const arrowLeft = this.newHtml.addElement(container, arrowLeftObj, "div");
     arrowLeft.innerHTML = "<";
     arrowLeft.addEventListener("click", async (e) => {
-      const newData = await this.addDataOnclick(
+      const newData = await this.arrowsFunction(
         e,
         nextPageUrl,
         prevPageUrl,
-        apiData
+        apiData,
+        dataContainer
       );
-      console.log(newData);
-      this.loadNewDataOnPage(dataContainer, newData);
-
+      nextPageUrl = newData.info.next;
+      prevPageUrl = newData.info.prev;
+    });
+    const arrowRight = this.newHtml.addElement(container, arrowRightObj, "div");
+    arrowRight.innerHTML = ">";
+    arrowRight.addEventListener("click", async (e) => {
+      const newData = await this.arrowsFunction(
+        e,
+        nextPageUrl,
+        prevPageUrl,
+        apiData,
+        dataContainer
+      );
       nextPageUrl = newData.info.next;
       prevPageUrl = newData.info.prev;
     });
   }
 
+  async arrowsFunction(
+    element,
+    nextPageUrl,
+    prevPageUrl,
+    apiData,
+    dataContainer
+  ) {
+    const newData = await this.addDataOnclick(
+      element,
+      nextPageUrl,
+      prevPageUrl,
+      apiData
+    );
+    this.loadNewDataOnPage(dataContainer, newData);
+    return newData;
+  }
+
   async addDataOnclick(e, nextPage, prevPage, currentData) {
-    console.log(e);
     if (e.target.className === "arrow-right") {
       const nextData = await this.apiCall.getApiData(nextPage);
       return nextData;

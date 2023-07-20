@@ -34,29 +34,37 @@ class AddHtmlElement {
         for (const attribute in elementObj) {
           htmlElement.setAttribute(attribute, elementObj[attribute]);
           container.appendChild(htmlElement);
-          return htmlElement;
         }
+        return htmlElement;
       case "img":
         htmlElement = document.createElement("img");
         for (const attribute in elementObj) {
           htmlElement.setAttribute(attribute, elementObj[attribute]);
           container.appendChild(htmlElement);
-          return htmlElement;
         }
+        return htmlElement;
       case "ul":
         htmlElement = document.createElement("ul");
         for (const attribute in elementObj) {
           htmlElement.setAttribute(attribute, elementObj[attribute]);
           container.appendChild(htmlElement);
-          return htmlElement;
         }
+        return htmlElement;
       case "li":
         htmlElement = document.createElement("li");
         for (const attribute in elementObj) {
           htmlElement.setAttribute(attribute, elementObj[attribute]);
           container.appendChild(htmlElement);
-          return htmlElement;
         }
+        return htmlElement;
+      case "button":
+        htmlElement = document.createElement("button");
+        for (const attribute in elementObj) {
+          htmlElement.setAttribute(attribute, elementObj[attribute]);
+        }
+        console.log(container);
+        container.appendChild(htmlElement);
+        return htmlElement;
     }
   }
 }
