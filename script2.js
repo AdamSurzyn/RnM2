@@ -1,5 +1,6 @@
 class Character {
   //Content of a character and what details to add
+  propertiesObj;
   constructor(propertiesObj) {
     this.properties = propertiesObj;
   }
@@ -37,12 +38,10 @@ class Character {
 
 class ApiCall {
   //Returning data from urls
-  constructor(url) {
-    this.url = url;
-  }
+  constructor() {}
 
-  async getApiData() {
-    const response = await fetch(this.url);
+  async getApiData(url) {
+    const response = await fetch(url);
     const responseJson = await response.json();
     return responseJson;
   }
@@ -52,9 +51,10 @@ class MainPageContent {
   //Loading up data to the page
   //Switching pages
   //Loading up a single character to the page
+  container;
   constructor(container) {
     this.container = container;
-    this.createHtml = new addHtmlElement();
+    this.createHtml = new AddHtmlElement();
   }
 
   listOfCharactersSetup(charsObj) {
@@ -64,22 +64,28 @@ class MainPageContent {
   }
 
   addCharacterToContainer(container, charTile, charDetails) {
-    let newElement = document.createElement("div");
+    const charListContainerObj = {
+      class: "chars-card",
+    };
+    const charListContainer = this.createHtml.addElement(
+      container,
+      charListContainerObj,
+      "div"
+    );
+
     const charValues = Object.entries(charTile);
-    newElement.classList.add("chars-card");
-    container.appendChild(newElement);
     charValues.forEach(([key, value]) => {
       if (key === "imageUrl") {
         this.createHtml.addImageElement(
-          newElement,
+          charListContainer,
           charTile.imageUrl,
           charTile.name
         );
       } else {
-        this.createHtml.addDivElement(newElement, value);
+        this.createHtml.addDivElement(charListContainer, value);
       }
     });
-    this.onClickOpenTab(newElement, charTile, charDetails);
+    this.onClickOpenTab(charListContainer, charTile, charDetails);
   }
 
   onClickOpenTab(element, charTile, charDetails) {
@@ -98,15 +104,16 @@ class MainPageContent {
 }
 
 class CharDetailsTab {
+  charTile;
+  charDetails;
   constructor(charTile, charDetails) {
-    (this.charTile = charTile),
-      (this.charDetails = charDetails),
-      (this.addHtml = new addHtmlElement());
+    this.charTile = charTile;
+    this.charDetails = charDetails;
+    this.addHtml = new AddHtmlElement();
   }
   async addCharDetails(container) {
     const charTile = Object.entries(this.charTile);
     const charDetails = Object.entries(this.charDetails);
-    console.log(this.charDetails);
     charTile.forEach(([key, value]) => {
       if (key === "imageUrl") {
         this.addHtml.addImageElement(
@@ -132,7 +139,7 @@ class CharDetailsTab {
   }
 }
 
-class addHtmlElement {
+class AddHtmlElement {
   constructor() {}
 
   addDivElement(container, value) {
@@ -159,6 +166,117 @@ class addHtmlElement {
     ulContainer.appendChild(liElement);
     return liElement;
   }
+
+  addElement(container, elementObj, type) {
+    let htmlElement;
+    switch (type) {
+      case "div":
+        htmlElement = document.createElement("div");
+        for (const attribute in elementObj) {
+          htmlElement.setAttribute(attribute, elementObj[attribute]);
+          container.appendChild(htmlElement);
+          return htmlElement;
+        }
+      case "img":
+        htmlElement = document.createElement("img");
+        for (const attribute in elementObj) {
+          htmlElement.setAttribute(attribute, elementObj[attribute]);
+          container.appendChild(htmlElement);
+          return htmlElement;
+        }
+      case "ul":
+        htmlElement = document.createElement("ul");
+        for (const attribute in elementObj) {
+          htmlElement.setAttribute(attribute, elementObj[attribute]);
+          container.appendChild(htmlElement);
+          return htmlElement;
+        }
+      case "li":
+        htmlElement = document.createElement("li");
+        for (const attribute in elementObj) {
+          htmlElement.setAttribute(attribute, elementObj[attribute]);
+          container.appendChild(htmlElement);
+          return htmlElement;
+        }
+    }
+  }
 }
 
-export { ApiCall, MainPageContent, Character, CharDetailsTab, addHtmlElement };
+class PagingArrows {
+  constructor() {
+    this.newHtml = new AddHtmlElement();
+    this.apiCall = new ApiCall();
+  }
+
+  addArrows(container, dataContainer, apiData) {
+    const arrowRightObj = {
+      class: "arrow-right",
+      innerHTML: ">",
+    };
+    const arrowLeftObj = {
+      class: "arrow-left",
+      innerHTML: "<",
+    };
+    const arrowRight = this.newHtml.addElement(container, arrowRightObj, "div");
+    arrowRight.innerHTML = ">";
+    arrowRight.addEventListener("click", (e) => {
+      this.addDataOnclick(
+        e,
+        apiData.info.next,
+        apiData.info.prev,
+        dataContainer
+      );
+    });
+    const arrowLeft = this.newHtml.addElement(container, arrowLeftObj, "div");
+    arrowLeft.innerHTML = "<";
+    arrowLeft.addEventListener("click", (e) => {
+      this.addDataOnclick(
+        e,
+        apiData.info.next,
+        apiData.info.prev,
+        dataContainer
+      );
+    });
+  }
+
+  async addDataOnclick(e, nextPage, prevPage, dataContainer) {
+    if ((e.target.class = "arrow-right")) {
+      const nextData = await this.apiCall.getApiData(nextPage);
+      console.log(nextData);
+      this.loadNewDataOnPage(dataContainer, nextData);
+    } else {
+      const prevData = await this.apiCall.getApiData(prevPage);
+      console.log(prevData);
+      this.loadNewDataOnPage(dataContainer, prevData);
+    }
+  }
+
+  loadNewDataOnPage(container, pageData) {
+    this.clearContainer(container);
+    let charsArr = [];
+    pageData.results.forEach((char) => {
+      let charToPush = new Character(char);
+      let charObj = {
+        tile: charToPush.tileInfo,
+        details: charToPush.detailedInfo,
+      };
+      charsArr.push(charObj);
+    });
+    const charContainer = document.querySelector(".list-of-chars");
+    const mainPage = new MainPageContent(charContainer);
+    mainPage.listOfCharactersSetup(charsArr);
+  }
+
+  clearContainer(container) {
+    container.replaceChildren();
+  }
+}
+
+export {
+  ApiCall,
+  MainPageContent,
+  Character,
+  CharDetailsTab,
+  AddHtmlElement,
+  PagingArrows,
+};

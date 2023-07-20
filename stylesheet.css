@@ -14,10 +14,8 @@
   grid-template-columns: repeat(3, 1fr);
 }
 
-.arrowL,
-.arrowR,
-.counter {
-  display: flex;
-  justify-content: center;
-  align-items: center;
+.arrows-container {
+  display: grid;
+  grid-template-columns: repeat(2, 140px);
+  grid-template-rows: repeat(1, 30px);
 }

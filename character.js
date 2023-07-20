@@ -1,4 +1,6 @@
-import { ApiCall, CharDetailsTab, Character } from "./script2.js";
+import { CharDetailsTab } from "./charDetailsTab.js";
+import { ApiCall } from "./apiCall.js";
+import { NewCharacter } from "./newCharacter.js";
 function addCharToPage() {}
 
 function getCharId() {
@@ -10,11 +12,11 @@ function getCharId() {
 
 async function setCharacterInfo() {
   const charId = getCharId();
-  const charCall = new ApiCall(
+  const charCall = new ApiCall();
+  const charData = await charCall.getApiData(
     `https://rickandmortyapi.com/api/character/${charId}`
   );
-  const charData = await charCall.getApiData();
-  const charInfo = new Character(charData);
+  const charInfo = new NewCharacter(charData);
   const charContainer = document.querySelector(".char-container");
   let newCharTab = new CharDetailsTab(charInfo.tileInfo, charInfo.detailedInfo);
   newCharTab.addCharDetails(charContainer);
