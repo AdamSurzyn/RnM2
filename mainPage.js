@@ -34,5 +34,14 @@ async function loadMainPage() {
   );
   searcher.createSearchForm();
 }
+/**
+ * TODO: Add innerHTML to the addHtmlELement creation
+ * TODO: Create all HTML elements with addHtmlElement class
+ * TODO: Add episodes and their names to the individual character tab
+ * TODO: Whole css...
+ * TODO: Assigning folders for specific .js files
+ * TODO: Combine the character obj into one and then create different character html element depending if it's in tile or seperate tab
+ * TODO: Create helper functions (iterating through object etc.)
+ */
 
 loadMainPage();
