@@ -8,15 +8,12 @@ class ReturnBtn {
 
   createButton() {
     const btnObj = {
+      container: this.container,
       type: "button",
-      name: "return-button",
-      textContent: "Take me back",
+      htmlClass: "return-button",
+      text: "Take me back",
     };
-    const returnButton = this.createElement.addElement(
-      this.container,
-      btnObj,
-      "button"
-    );
+    const returnButton = this.createElement.addElement(btnObj);
     this.addClickListener(returnButton, this.returnToMain);
     return returnButton;
   }

@@ -17,24 +17,32 @@ class MainPageContent {
 
   addCharacterToContainer(container, charTile, charDetails) {
     const charListContainerObj = {
-      class: "chars-card",
+      container: container,
+      type: "div",
+      text: "",
+      htmlClass: "char-container",
     };
-    const charListContainer = this.createHtml.addElement(
-      container,
-      charListContainerObj,
-      "div"
-    );
-
+    const charListContainer = this.createHtml.addElement(charListContainerObj);
     const charValues = Object.entries(charTile);
+    console.log(charValues);
     charValues.forEach(([key, value]) => {
       if (key === "imageUrl") {
-        this.createHtml.addImageElement(
-          charListContainer,
-          charTile.imageUrl,
-          charTile.name
-        );
+        let charObjImg = {
+          src: charTile.imageUrl,
+          container: charListContainer,
+          type: "img",
+          text: "",
+          htmlClass: "char-img",
+        };
+        this.createHtml.addElement(charObjImg);
       } else {
-        this.createHtml.addDivElement(charListContainer, value);
+        let charObjDiv = {
+          container: charListContainer,
+          type: "div",
+          text: value,
+          htmlClass: "char-text",
+        };
+        this.createHtml.addElement(charObjDiv);
       }
     });
     this.onClickOpenTab(charListContainer, charTile, charDetails);

@@ -13,16 +13,19 @@ class PagingArrows {
     let nextPageUrl = apiData.info.next;
     let prevPageUrl = apiData.info.prev;
     const arrowRightObj = {
-      class: "arrow-right",
-      innerHTML: ">",
+      container: container,
+      type: "div",
+      htmlClass: "arrow-right",
+      text: ">",
     };
     const arrowLeftObj = {
-      class: "arrow-left",
-      innerHTML: "<",
+      container: container,
+      type: "div",
+      htmlClass: "arrow-left",
+      text: "<",
     };
 
-    const arrowLeft = this.newHtml.addElement(container, arrowLeftObj, "div");
-    arrowLeft.innerHTML = "<";
+    const arrowLeft = this.newHtml.addElement(arrowLeftObj);
     arrowLeft.addEventListener("click", async (e) => {
       const newData = await this.arrowsFunction(
         e,
@@ -34,8 +37,7 @@ class PagingArrows {
       nextPageUrl = newData.info.next;
       prevPageUrl = newData.info.prev;
     });
-    const arrowRight = this.newHtml.addElement(container, arrowRightObj, "div");
-    arrowRight.innerHTML = ">";
+    const arrowRight = this.newHtml.addElement(arrowRightObj);
     arrowRight.addEventListener("click", async (e) => {
       const newData = await this.arrowsFunction(
         e,

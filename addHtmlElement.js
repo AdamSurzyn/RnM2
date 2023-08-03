@@ -26,43 +26,52 @@ class AddHtmlElement {
     return liElement;
   }
 
-  addElement(container, elementObj, type) {
+  addElement({ container, type, text, htmlClass, ...elementObj }) {
     let htmlElement;
     switch (type) {
       case "div":
         htmlElement = document.createElement("div");
         for (const attribute in elementObj) {
           htmlElement.setAttribute(attribute, elementObj[attribute]);
-          container.appendChild(htmlElement);
         }
+        htmlElement.innerHTML = text;
+        htmlElement.classList.add(htmlClass);
+        container.appendChild(htmlElement);
         return htmlElement;
       case "img":
         htmlElement = document.createElement("img");
         for (const attribute in elementObj) {
           htmlElement.setAttribute(attribute, elementObj[attribute]);
-          container.appendChild(htmlElement);
         }
+        htmlElement.innerHTML = text;
+        htmlElement.classList.add(htmlClass);
+        container.appendChild(htmlElement);
         return htmlElement;
       case "ul":
         htmlElement = document.createElement("ul");
         for (const attribute in elementObj) {
           htmlElement.setAttribute(attribute, elementObj[attribute]);
-          container.appendChild(htmlElement);
         }
+        htmlElement.innerHTML = text;
+        htmlElement.classList.add(htmlClass);
+        container.appendChild(htmlElement);
         return htmlElement;
       case "li":
         htmlElement = document.createElement("li");
         for (const attribute in elementObj) {
           htmlElement.setAttribute(attribute, elementObj[attribute]);
-          container.appendChild(htmlElement);
         }
+        htmlElement.innerHTML = text;
+        htmlElement.classList.add(htmlClass);
+        container.appendChild(htmlElement);
         return htmlElement;
       case "button":
         htmlElement = document.createElement("button");
         for (const attribute in elementObj) {
           htmlElement.setAttribute(attribute, elementObj[attribute]);
         }
-        console.log(container);
+        htmlElement.innerHTML = text;
+        htmlElement.classList.add(htmlClass);
         container.appendChild(htmlElement);
         return htmlElement;
     }
