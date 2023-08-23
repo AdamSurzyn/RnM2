@@ -53,6 +53,7 @@ class MainPageContent {
       ...charTile,
       ...charDetails, //This is worthless - im going to make a separate api call anyway
     };
+    console.log(joinedCharInfo);
     element.addEventListener("click", () => {
       this.openCharTab(joinedCharInfo);
     });

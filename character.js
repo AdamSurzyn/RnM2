@@ -22,6 +22,7 @@ async function setCharacterInfo() {
   const charData = await charCall.getApiData(
     `https://rickandmortyapi.com/api/character/${charId}`
   );
+  console.log(charData);
   const charInfo = new NewCharacter(charData);
 
   let newCharTab = new CharDetailsTab(charInfo.tileInfo, charInfo.detailedInfo);
