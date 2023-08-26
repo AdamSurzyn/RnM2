@@ -7,7 +7,7 @@ jest.unstable_mockModule("fs", async function () {
 describe("new char", function () {
   it("", async function () {
     // import the module being tested, which uses the mocked resource
-    const { NewCharacter } = await import("./newCharacter.js");
+    const { NewCharacter } = await import("../newCharacter.js");
     const newChar = new NewCharacter({
       created: "2017-11-04T19:22:43.665Z",
       episode: (42)[

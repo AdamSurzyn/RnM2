@@ -25,7 +25,7 @@ class PagingArrows {
       text: "<",
     };
 
-    const arrowLeft = this.newHtml.addElement(arrowLeftObj);
+    const arrowLeft = this.newHtml.addGenericElement(arrowLeftObj);
     arrowLeft.addEventListener("click", async (e) => {
       const newData = await this.arrowsFunction(
         e,
@@ -37,7 +37,7 @@ class PagingArrows {
       nextPageUrl = newData.info.next;
       prevPageUrl = newData.info.prev;
     });
-    const arrowRight = this.newHtml.addElement(arrowRightObj);
+    const arrowRight = this.newHtml.addGenericElement(arrowRightObj);
     arrowRight.addEventListener("click", async (e) => {
       const newData = await this.arrowsFunction(
         e,

@@ -22,19 +22,20 @@ class MainPageContent {
       text: "",
       htmlClass: "char-container",
     };
-    const charListContainer = this.createHtml.addElement(charListContainerObj);
+    const charListContainer =
+      this.createHtml.addGenericElement(charListContainerObj);
     const charValues = Object.entries(charTile);
     console.log(charValues);
     charValues.forEach(([key, value]) => {
       if (key === "imageUrl") {
         let charObjImg = {
-          src: charTile.imageUrl,
           container: charListContainer,
           type: "img",
           text: "",
           htmlClass: "char-img",
+          src: charTile.imageUrl,
         };
-        this.createHtml.addElement(charObjImg);
+        this.createHtml.addGenericElement(charObjImg);
       } else {
         let charObjDiv = {
           container: charListContainer,
@@ -42,7 +43,7 @@ class MainPageContent {
           text: value,
           htmlClass: "char-text",
         };
-        this.createHtml.addElement(charObjDiv);
+        this.createHtml.addGenericElement(charObjDiv);
       }
     });
     this.onClickOpenTab(charListContainer, charTile, charDetails);
@@ -53,7 +54,6 @@ class MainPageContent {
       ...charTile,
       ...charDetails, //This is worthless - im going to make a separate api call anyway
     };
-    console.log(joinedCharInfo);
     element.addEventListener("click", () => {
       this.openCharTab(joinedCharInfo);
     });

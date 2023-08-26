@@ -26,55 +26,32 @@ class AddHtmlElement {
     return liElement;
   }
 
-  addElement({ container, type, text, htmlClass, ...elementObj }) {
-    let htmlElement;
-    switch (type) {
-      case "div":
-        htmlElement = document.createElement("div");
-        for (const attribute in elementObj) {
-          htmlElement.setAttribute(attribute, elementObj[attribute]);
-        }
-        htmlElement.innerHTML = text;
+  elementCreation(container, type, text, htmlClass, elementObj) {
+    if (container !== undefined) {
+      let htmlElement = document.createElement(type);
+
+      for (const attribute in elementObj) {
+        htmlElement.setAttribute(attribute, elementObj[attribute]);
+      }
+
+      if (htmlClass !== undefined) {
         htmlElement.classList.add(htmlClass);
-        container.appendChild(htmlElement);
-        return htmlElement;
-      case "img":
-        htmlElement = document.createElement("img");
-        for (const attribute in elementObj) {
-          htmlElement.setAttribute(attribute, elementObj[attribute]);
-        }
+      }
+      if (text !== undefined) {
         htmlElement.innerHTML = text;
-        htmlElement.classList.add(htmlClass);
-        container.appendChild(htmlElement);
-        return htmlElement;
-      case "ul":
-        htmlElement = document.createElement("ul");
-        for (const attribute in elementObj) {
-          htmlElement.setAttribute(attribute, elementObj[attribute]);
-        }
-        htmlElement.innerHTML = text;
-        htmlElement.classList.add(htmlClass);
-        container.appendChild(htmlElement);
-        return htmlElement;
-      case "li":
-        htmlElement = document.createElement("li");
-        for (const attribute in elementObj) {
-          htmlElement.setAttribute(attribute, elementObj[attribute]);
-        }
-        htmlElement.innerHTML = text;
-        htmlElement.classList.add(htmlClass);
-        container.appendChild(htmlElement);
-        return htmlElement;
-      case "button":
-        htmlElement = document.createElement("button");
-        for (const attribute in elementObj) {
-          htmlElement.setAttribute(attribute, elementObj[attribute]);
-        }
-        htmlElement.innerHTML = text;
-        htmlElement.classList.add(htmlClass);
-        container.appendChild(htmlElement);
-        return htmlElement;
+      }
+      container.appendChild(htmlElement);
+      return htmlElement;
+    } else {
+      return;
     }
+  }
+
+  addGenericElement({ container, type, text, htmlClass, ...elementObj }) {
+    if (type === undefined) {
+      return;
+    }
+    return this.elementCreation(container, type, text, htmlClass, elementObj);
   }
 }
 

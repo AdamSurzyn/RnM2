@@ -13,7 +13,7 @@ class ReturnBtn {
       htmlClass: "return-button",
       text: "Take me back",
     };
-    const returnButton = this.createElement.addElement(btnObj);
+    const returnButton = this.createElement.addGenericElement(btnObj);
     this.addClickListener(returnButton, this.returnToMain);
     return returnButton;
   }
