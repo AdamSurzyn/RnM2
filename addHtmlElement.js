@@ -25,33 +25,28 @@ class AddHtmlElement {
     ulContainer.appendChild(liElement);
     return liElement;
   }
-
   elementCreation(container, type, text, htmlClass, elementObj) {
-    if (container !== undefined) {
-      let htmlElement = document.createElement(type);
+    let htmlElement = document.createElement(type.toString());
 
-      for (const attribute in elementObj) {
-        htmlElement.setAttribute(attribute, elementObj[attribute]);
-      }
+    for (const attribute in elementObj) {
+      htmlElement.setAttribute(attribute, elementObj[attribute]);
+    }
 
-      if (htmlClass !== undefined) {
-        htmlElement.classList.add(htmlClass);
-      }
-      if (text !== undefined) {
-        htmlElement.innerHTML = text;
-      }
-      container.appendChild(htmlElement);
-      return htmlElement;
+    if (htmlClass !== undefined) {
+      htmlElement.classList.add(htmlClass);
+    }
+    if (text !== undefined) {
+      htmlElement.innerHTML = text;
+    }
+    container.appendChild(htmlElement);
+    return htmlElement;
+  }
+  addGenericElement({ container, type, text, htmlClass, ...elementObj }) {
+    if (type !== undefined && container !== undefined) {
+      return this.elementCreation(container, type, text, htmlClass, elementObj);
     } else {
       return;
     }
-  }
-
-  addGenericElement({ container, type, text, htmlClass, ...elementObj }) {
-    if (type === undefined) {
-      return;
-    }
-    return this.elementCreation(container, type, text, htmlClass, elementObj);
   }
 }
 

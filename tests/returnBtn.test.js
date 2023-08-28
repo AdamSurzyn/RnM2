@@ -15,7 +15,7 @@ describe("Return button", function () {
     const rtnButton = new ReturnBtn(container);
     htmlMock.mockReturnValue("button");
     rtnButton.addClickListener = eventListenerMock;
-    rtnButton.createElement.addElement = htmlMock;
+    rtnButton.createElement.addGenericElement = htmlMock;
     expect(rtnButton.createButton()).toBe("button");
   });
 });
